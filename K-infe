@@ -1,0 +1,27 @@
+#!/usr/bin/python
+#DESC: kick out Klout influencees and their Klout score
+#DESC: for a given account
+# Twitter ID to weighted influencers
+import sys, os, time
+from simpleconfigparser import simpleconfigparser
+from pyklout import Klout
+
+#respect the Klout API, this lets you batch up
+#as many requests as you want w/o going over limit
+time.sleep(.125)
+
+config = simpleconfigparser()
+config.read(os.environ['HOME'] +'/.twitter')
+api = Klout(config.Klout.key)
+
+name = str(sys.argv[1])
+data = api.identity(name,'twitter')
+user_id = data['id']
+# fails hard if you feed it a name that doesn't have a Klout account
+# really must find Python equivalent of Try::Tiny for this problem.
+list = api.influences(user_id)
+
+for inf in list['myInfluencees']:
+    contact = str(inf['entity']['payload']['nick']);
+    score = str(int(inf['entity']['payload']['score']['score']));
+    print name + "," + contact + "," + score

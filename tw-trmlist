@@ -1,0 +1,46 @@
+#!/usr/bin/python
+#DESC: Any list that begins with trm- is treated as a list of accounts
+#DESC: to record. List names are used as subdirectories. The net effect
+#DESC: of this script is a batch application of tw-prime to a list.
+#DESC: This just writes 1970 'primer' files, which get processed
+#DESC: by the normal execution of N-queue. 
+import tweepy, csv, sys, os, re
+from simpleconfigparser import simpleconfigparser
+from time import gmtime, strftime
+
+config = simpleconfigparser()
+config.read(os.environ['HOME'] +'/.twitter')
+
+
+auth = tweepy.OAuthHandler(config.API.consumer_key, config.API.consumer_secret)
+auth.set_access_token(config.API.access_token_key, config.API.access_token_secret)
+api = tweepy.API(auth)
+
+y = api.verify_credentials()
+
+name = y.screen_name
+if len(sys.argv) > 1:
+   name = sys.argv[1]
+   print name
+
+lists = api.lists_all(name)
+for list in lists:
+   # check re for ^trm
+   print list.slug
+   if re.match("trm-", list.slug):
+      dirname = list.slug[4:]
+      dirname = dirname.replace('-', '') 
+      if not os.path.isdir(dirname):
+         os.makedirs(dirname)
+   desc = open("./" + dirname + "/description.txt", 'w')
+   desc.write(list.description + "\n")
+   for member in tweepy.Cursor(api.list_members,name,list.slug).items():
+      focnt = str(member.followers_count)
+      frcnt = str(member.friends_count)
+      statc = str(member.statuses_count)
+      desc.write(member.screen_name +"," + member.id_str + "," + str(member.created_at) + "," + frcnt + "," + focnt + "," + statc  + "," + strftime("%Y-%m-%d %H:%M:%S", gmtime()) + "\n")
+      if not os.path.isfile( "./" + dirname + "/" + member.screen_name):
+          new = open("./" + dirname + "/" + member.screen_name + "-consolidated-1970-01-01-00-00.txt", 'w')
+          new.write("999999999999999999")
+          new.close()
+   desc.close()

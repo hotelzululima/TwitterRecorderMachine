@@ -7,10 +7,10 @@ This code is meant for use on a Linux host and you'll need the following in plac
 * one shell account per Twitter observer account
 * one cron job per account every sixty seconds
 * system assumes ~/Dropbox is dedicated to TRM duty
-* Twitter accounts need secret trm- list for each group to observer
-* tw-auth output goes in ~/.twitter
+* Twitter accounts need secret trm- list for each group to observe
+* Credentials from tw-auth output go into ~/.twitter
 
-A quad processor VPS with four gig of memory can support sixteen shell account/Twitter account pairs watching over a total of 3,200 accounts. Capacity may be increased with little loss of resolution by dividing accounts into even/odd minute execution groups. The only hard limit on accounts tracked is disk space, but there is a soft limit in that each account will only be accessed  1/(total count of accounts) minutes.
+A quad processor VPS with four gig of memory can support sixteen shell account/Twitter account pairs watching over a total of 3,200 accounts. Capacity may be increased with little loss of resolution by dividing accounts into even/odd minute execution groups. The only hard limit on accounts tracked is disk space, but there is a soft limit in that each account will only be accessed every  1/(total count of accounts) minutes.
 
 Normal practice involves collectors with specific interests watching less than ten lists with a total of one to two hundred subjects, often overlapping between lists. Analysts typically harvest all the accounts being watched by collectors and they run broader lists of up to five hundred members for background.
 
@@ -20,3 +20,6 @@ Output from TRM comes in a variety of formats which include:
 * raw tweet file with all metadata eliminated and URLs removed as well. This is used with the Java Graphical Authorship Attribution Program, a simple cross platform stylometry tool.
 * CSV files derived from the tweet log, which contain things like mentions, device usage, and other metadata useful for large scale social network analysis using Gephi.
 * XLS files derived from the tweet log, which contain information on account usage time. A comparison of Euclidean distance taken from a 7x24 matrix of tweet activity normalized between 0% and 100% provides a sense of concurrency of use from a pair of accounts.
+
+The best feature of TRM is that collectors can do everything they need simply by making secret lists. Analysts originally had access to their collected content using Dropbox. The constant churn of files made this a real nuisance and finally Dropbox was abandoned. The need for access to the produced content without needing a shell account has kept us coming back to Dropbox, but using it as a repository synchronized with rsync rather than a working space.
+

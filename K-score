@@ -1,0 +1,26 @@
+#!/usr/bin/python
+import sys, os, time, tweepy
+from simpleconfigparser import simpleconfigparser
+from pyklout import Klout
+
+#don't overrun Klout API limit
+time.sleep(.125)
+
+config = simpleconfigparser()
+config.read(os.environ['HOME'] +'/.twitter')
+
+auth = tweepy.OAuthHandler(config.API.consumer_key, config.API.consumer_secret)
+auth.set_access_token(config.API.access_token_key, config.API.access_token_secret)
+tapi = tweepy.API(auth)
+#rlim = tapi.rate_limit_status()[u'resources'][u'statuses'][u'/statuses/user_timeline'][u'remaining']
+#print "api: " + str(rlim)
+
+y = tapi.get_user(sys.argv[1])
+name = y.screen_name
+
+kapi = Klout(config.Klout.key)
+
+data = kapi.identity(sys.argv[1],'twitter')
+user_id = data['id']
+score = kapi.score(user_id)
+print name + "," + str(score['score'])

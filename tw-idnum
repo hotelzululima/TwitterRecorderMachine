@@ -1,0 +1,31 @@
+#!/usr/bin/python
+#DESC: This thing gets used to sense accounts that are locked, renamed, suspended, etc
+import urllib3
+import sys
+import tweepy
+import os
+from simpleconfigparser import simpleconfigparser
+
+config = simpleconfigparser()
+config.read(os.environ['HOME'] +'/.twitter')
+
+
+auth = tweepy.OAuthHandler(config.API.consumer_key, config.API.consumer_secret)
+auth.set_access_token(config.API.access_token_key, config.API.access_token_secret)
+api = tweepy.API(auth)
+y = api.verify_credentials()
+me = y.screen_name
+#print dir(api)
+
+if True:
+    try:
+        y = api.get_user(sys.argv[1])
+        #and not api.show_friendship(me,sys.argv[1])
+        if y.protected:
+            #print("account " + sys.argv[1] + " is protected")
+            exit(2)
+    except (RuntimeError, TypeError, NameError):
+        #print("runtime error while checking for account protected")
+        exit(3)
+#print("account " + sys.argv[1] + " is accessible")
+exit(0)

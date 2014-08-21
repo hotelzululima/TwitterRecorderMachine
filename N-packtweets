@@ -1,0 +1,53 @@
+#!/bin/bash
+#DESC: This is invoked by N-queue only IN the target directory
+#DESC: $1 is the name of the account being tracked
+#DESC: This shell script is the most embarassing piece of code ever
+DERP=`date +%Y-%m-%d-%H-%M`
+echo $DERP
+
+#sense ID of last tweet in account's consolidated file
+LASTTWEET=`tail -1 $1-consolidated* | awk -F " " {'print $1'}`
+#perflog is a catch all for whatever debugging is happening
+echo $LASTTWEET >> $HOME/Dropbox/perflog.txt
+#download tweets, stop when we see a tweet ID we already have
+/usr/local/bin/tw-devld $1  $LASTTWEET 
+
+# this is the place to send $1 to Splunk
+#cat $1 | grep "^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]" >  ~/Dropbox/splunkspool/$1
+#yes, this IS horribly inefficient
+#yes, this IS horribly inelegant
+cat $1 > packtemp-$DERP.txt
+cat $1-consolidated*.txt >> packtemp-$DERP.txt
+rm $1-consolidated*.txt
+# uniq might be an unneeded step here, only really need the grep for first event
+# The string of 9s is the largest possible tweet ID, it's used in the primer file from 1970
+cat packtemp*.txt | grep -v "999999999999999999" | grep "^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]" |  sort | uniq > $1-consolidated-$DERP.txt
+rm packtemp*
+
+#mentions get used for large scale social network graphing using Gephi.
+#there is some sort of race condition that affects derivative files
+#yeah, the derivative files that are almost never used
+cat $1-mentions > mentions-$DERP.csv
+cat $1-mentions-2* >> mentions-$DERP.csv
+rm $1-mentions-2*
+rm $1-mentsumm*
+rm $1-topment-*
+mv mentions-$DERP.csv $1-mentions-$DERP.csv
+rm $1-mentions
+rm mentions-$DERP.csv
+cat $1-mentions-$DERP.csv | sort | uniq -c | awk -F " " {'print $1 "," $2'} | sort -n > $1-mentsumm-$DERP.csv
+tail -25 $1-mentsumm-$DERP.csv > $1-topment-$DERP.csv
+
+#more fuckery, similar in spirit to the prior stanza. It seemed like a good idea at the time.
+cat $1-devtype.csv > devtype-$DERP.csv
+cat $1-devtype-2* >> devtype-$DERP.csv
+rm $1-devtype-2*
+rm $1-devsumm*
+mv devtype-$DERP.csv $1-devtype-$DERP.csv
+rm $1-devtype.csv
+#rm devtype-$DERP.csv
+cat $1-devtype-$DERP.csv | awk -F "," {'print $1 "," $2'} | sort | uniq -c | awk -F " " {'print $1 "," $2'} > $1-devsumm-$DERP.csv
+
+
+# looks funny, but hist-hour is a shell script
+/usr/local/bin/hist-hour $1
