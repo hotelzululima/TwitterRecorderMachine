@@ -1,6 +1,6 @@
 # Twitter Recorder Machine
 
-The Twitter Recorder Machine, hereafter TRM, is a collection of five dozen small python scripts that are used to support a team of individuals doing large scale monitoring of Twitter.
+The Twitter Recorder Machine, hereafter TRM, is a collection of three dozen small python scripts that are used to support a team of individuals doing large scale monitoring of Twitter.
 
 This code is meant for use on a Linux host and you'll need the following in place to fully exercise it:
 
@@ -9,6 +9,7 @@ This code is meant for use on a Linux host and you'll need the following in plac
 * system assumes ~/Dropbox is dedicated to TRM duty
 * Twitter accounts need secret trm- list for each group to observe
 * Credentials from tw-auth output go into ~/.twitter
+* manually add Klout API key to ~/.twitter if needed
 
 A quad processor VPS with four gig of memory can support sixteen shell account/Twitter account pairs watching over a total of 3,200 accounts. Capacity may be increased with little loss of resolution by dividing accounts into even/odd minute execution groups. The only hard limit on accounts tracked is disk space, but there is a soft limit in that each account will only be accessed every  1/(total count of accounts) minutes.
 
