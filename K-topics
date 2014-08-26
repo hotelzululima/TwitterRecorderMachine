@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #DESC: produce csv output of Klout topics for a single account
-#DESC: batch this up for a bunch of accounts, visualize results with Gephi
+#DESC: batch this up for a bunch of accounts, visualize results with Gephi.
 import sys, os
 from pyklout import Klout
 from simpleconfigparser import simpleconfigparser
