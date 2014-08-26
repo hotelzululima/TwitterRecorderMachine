@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#DESC: kick out Klout influencees and their Klout score
+#DESC: kick out Klout influencees and their Klout score.
 #DESC: for a given account
 import sys, os, time
 from simpleconfigparser import simpleconfigparser
