@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#DESC: print a csv file of favorites using same format as tweet log
+#DESC: print a csv file of favorites using same format as tweet log.
 import tweepy, csv, sys, os
 from simpleconfigparser import simpleconfigparser
 
