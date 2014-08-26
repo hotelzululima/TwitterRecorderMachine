@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#DESC: Print lists for a given account
+#DESC: Print lists for a given account.
 import tweepy
 import csv
 import sys
