@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #DESC: given a tweet ID, couch up the full URL
 #DESC: it's not clear if this is ever used, maybe
-#DESC: for bulk screen shot duties?
+#DESC: for bulk screen shot duties??
 import tweepy, csv, sys, os
 from simpleconfigparser import simpleconfigparser
 
