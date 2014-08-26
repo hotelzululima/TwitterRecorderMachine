@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#DESC: print followers for a given screenname
+#DESC: print followers for a given screenname.
 import tweepy, os, sys, time
 from simpleconfigparser import simpleconfigparser
 
