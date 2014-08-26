@@ -1,31 +1,42 @@
 #!/usr/bin/python
-#DESC: This thing gets used to sense accounts that are locked, renamed, suspended, etc
-import urllib3
-import sys
-import tweepy
-import os
+#DESC: dealing with accounts that are renamed, self deleted, suspended, or protected
+#DESC: is quite simply a nightmare. There are no Twitter API facilities for the first
+#DESC: three cases. The protected API call checks precisely that, and there isn't 
+#DESC: a working method to tell if the account is protected from YOU.
+import urllib2,sys,tweepy,os
 from simpleconfigparser import simpleconfigparser
+from bs4 import BeautifulSoup
+
+#Account does not exist, or account has self-suspended, no way to tell w/o
+#trying to rename another account into the name in question
+try:
+    urllib2.urlopen("http://twitter.com/" + sys.argv[1])
+except urllib2.URLError:
+    print(sys.argv[1] + " does not exist")
+    exit(1)
+
+#Account has been suspended by Twitter
+soup = BeautifulSoup(urllib2.urlopen("http://twitter.com/" + sys.argv[1]))
+for thing in soup("title"):
+    if(thing.text == "Twitter / Account Suspended"):
+        print(sys.argv[1] + " is suspended")
+        exit(2)
 
 config = simpleconfigparser()
 config.read(os.environ['HOME'] +'/.twitter')
 
-
 auth = tweepy.OAuthHandler(config.API.consumer_key, config.API.consumer_secret)
 auth.set_access_token(config.API.access_token_key, config.API.access_token_secret)
 api = tweepy.API(auth)
-y = api.verify_credentials()
-me = y.screen_name
-#print dir(api)
 
-if True:
-    try:
-        y = api.get_user(sys.argv[1])
-        #and not api.show_friendship(me,sys.argv[1])
-        if y.protected:
-            #print("account " + sys.argv[1] + " is protected")
-            exit(2)
-    except (RuntimeError, TypeError, NameError):
-        #print("runtime error while checking for account protected")
-        exit(3)
-#print("account " + sys.argv[1] + " is accessible")
+#Account is protected
+y = api.get_user(sys.argv[1])
+if y.protected:
+    #need to check if our account can see it, but the
+    #various Tweepy friendship check methods all seem
+    #to be broken at the moment
+    print("account " + sys.argv[1] + " is protected")
+    exit(3)
+
+print("account " + sys.argv[1] + " is accessible")
 exit(0)
