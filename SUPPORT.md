@@ -36,3 +36,11 @@ There is a specific body of knowledge regarding what to expect when you get a gr
 
 My bookshelf includes Center for the Study of Inteligence classics like Psychology of Intelligence Analysis, On Thinking And Writing, I read all of the Kent Center Occasional Papers in 2013, and this will remain a growth direction for me. We are good at the technology aspect of this problem, we could really use some relationships that enhance our analytical abilities.
 
+The system itself directly supports a variety of analytical building blocks which are useful for reasoning about observed activities. These include:
+
+#####network analysis of connections, mentions, favorites, Klout influencer/influencee
+#####device usage analysis including visualization of large groups of users
+#####temporal signature analysis with slicing by content source (ignore automation)
+#####stylometry 
+
+
