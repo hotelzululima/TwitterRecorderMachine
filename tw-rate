@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#DESC: Rate limit checker
+#DESC: Rate limit checker.
 import tweepy
 import os
 from simpleconfigparser import simpleconfigparser
