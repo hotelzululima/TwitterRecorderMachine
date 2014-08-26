@@ -3,7 +3,7 @@
 #DESC: to record. List names are used as subdirectories. The net effect
 #DESC: of this script is a batch application of tw-prime to a list.
 #DESC: This just writes 1970 'primer' files, which get processed
-#DESC: by the normal execution of N-queue. 
+#DESC: by the normal execution of N-queue.
 import tweepy, csv, sys, os, re
 from simpleconfigparser import simpleconfigparser
 from time import gmtime, strftime
