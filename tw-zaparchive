@@ -3,7 +3,7 @@
 #DESC: you order the archive and feed it to this script
 #DESC: eats API, will stall out mysteriously, put this in 
 #DESC: screen and batch up 200 instances with a sleep 60
-#DESC: between them, check back periodically
+#DESC: between them, check back periodically 
 import tweepy, os, sys, urllib3, time
 from simpleconfigparser import simpleconfigparser
 
