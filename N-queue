@@ -1,6 +1,6 @@
 #!/bin/bash
 TEXTDATE=`date`
-#mind your OS version, check this manually
+#mind your OS version, check this manually.
 START=`date +%s`
 APISTART=`tw-rate` 
 
