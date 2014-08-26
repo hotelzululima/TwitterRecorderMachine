@@ -7,7 +7,7 @@
 #DESC: as the operator (if they are unskilled), but the volume will
 #DESC: be much lower. There are spreadsheets that take this XLS file
 #DESC: as input and there are Euclidean distances calculated for 
-#DESC: hour of day and day of week.
+#DESC: hour of day and day of week. 
 
 import datetime, sys, re, xlwt
 
