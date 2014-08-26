@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # encoding: utf-8
-#DESC: download tweets from a given screen name
+#DESC: download tweets from a given screen name.
 import tweepy, csv, sys, os, re
 from simpleconfigparser import simpleconfigparser
 
