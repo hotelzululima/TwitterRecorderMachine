@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#DESC: print URLs for an account's favorited tweets
+#DESC: print URLs for an account's favorited tweets.
 import tweepy, csv, sys, os
 from simpleconfigparser import simpleconfigparser
 
