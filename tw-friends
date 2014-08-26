@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#DESC: print accounts a given screen name is following
+#DESC: print accounts a given screen name is following.
 import tweepy
 import os
 import sys
