@@ -14,9 +14,7 @@ http://linkedin.com/in/nealrauhauser
 
 The following are some topics you can expect to see covered:
 
-<h1>Twitter Support</h1>
-##Twitter Support
-<h2>Twitter Support</h2>
+####Twitter Support
 
 The use of the system is fairly simple - put some accounts on a secret list, wait one minute per subject, and the system will auto-populate. There are a dozen little tricks of the trade for handling subjects that are attempting to evade surveillance or deceive observers. These things are also fodder for the mailing list.
 
