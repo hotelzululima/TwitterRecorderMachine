@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#DESC: quickly nuke whatever tweets we can see
+#DESC: quickly nuke whatever tweets we can see.
 import tweepy, ps
 from simpleconfigparser import simpleconfigparser
 
