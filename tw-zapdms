@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#DESC: every other DM cleaner sucks. This sucks a little less.
+#DESC: every other DM cleaner sucks. This sucks a little less. 
 import tweepy, os
 from simpleconfigparser import simpleconfigparser
 
