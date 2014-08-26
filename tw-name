@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#DESC: show name of account /w credentials in ~/.twitter
+#DESC: show name of account /w credentials in ~/.twitter 
 import tweepy
 import os
 from simpleconfigparser import simpleconfigparser
