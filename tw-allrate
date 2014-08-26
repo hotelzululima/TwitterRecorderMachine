@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#DESC: mysterious nested data structure is mysterious.
+#DESC: mysterious nested data structure is mysterious
 #DESC: Just how poor are my python skills?
 import tweepy, os
 from simpleconfigparser import simpleconfigparser
