@@ -1,4 +1,5 @@
 #!/usr/bin/python
+#DESC:
 import sys, os, time, tweepy
 from simpleconfigparser import simpleconfigparser
 from pyklout import Klout
