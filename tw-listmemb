@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#DESC: print members of <USER'S> <LIST>
+#DESC: print  members of <USER'S> <LIST>
 import tweepy
 import csv
 import sys
