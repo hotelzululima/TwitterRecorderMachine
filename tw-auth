@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+#DESC: print .twitter config file
 import tweepy
 
 #http://dev.twitter.com
