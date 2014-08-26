@@ -1,6 +1,6 @@
-# Gratis & Libre, Paid Support
+# Twitter Recorder Machine
 
-Twitter Recorder Machine is free for academic users and in general the intent is to run it long term in a similar fashion to how Alien Vault offers both the OSSIM product and the Open Threat Exchange Service.
+Twitter Recorder Machine is free for academic users and in general the intent is to run it in a similar fashion to how Alien Vault offers both the OSSIM product and the Open Threat Exchange Service.
 
 Maltego and Splunk are closed source but they are mature products that have made free access to experimenters a key component of their appeal. Unlike a certain predictive analytics vendor who shall remain nameless, they are probably not going to yank the rug out from under their installed base of gratis users. A classroom environment will ALWAYS be able to configure a sturdy base system that will facilitate teaching without spending anything other than time.
 
@@ -36,11 +36,14 @@ There is a specific body of knowledge regarding what to expect when you get a gr
 
 My bookshelf includes Center for the Study of Inteligence classics like Psychology of Intelligence Analysis, On Thinking And Writing, I read all of the Kent Center Occasional Papers in 2013, and this will remain a growth direction for me. We are good at the technology aspect of this problem, we could really use some relationships that enhance our analytical abilities.
 
-The system itself directly supports a variety of analytical building blocks which are useful for reasoning about observed activities. These include:
+The system as it is today directly supports a variety of analytical building blocks which are useful for reasoning about observed activities. These include:
 
 #####network analysis of connections, mentions, favorites, Klout influencer/influencee
+
 #####device usage analysis including visualization of large groups of users
+
 #####temporal signature analysis with slicing by content source (ignore automation)
-#####stylometry 
 
+#####preprocessed output suitable for stylometry
 
+#####Twitter output suitable for use with Splunk including account as source host
