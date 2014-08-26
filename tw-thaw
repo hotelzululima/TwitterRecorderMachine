@@ -1,0 +1,4 @@
+#!/bin/bash
+#DESC: restore content of frozen account, remove tarball
+tar xzvf $1-frozen.tgz
+rm $1-frozen.tgz
