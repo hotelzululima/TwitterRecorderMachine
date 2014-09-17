@@ -1,9 +1,17 @@
-#!/bin/bash
+ #!/bin/bash
 #DESC: This is invoked by N-queue only IN the target directory
 #DESC: $1 is the name of the account being tracked
 #DESC: This shell script is the most embarassing piece of code ever.
 DERP=`date +%Y-%m-%d-%H-%M`
 echo $DERP
+
+#check if account is alive
+#if NOT alive, freeze it
+#and bail from this script
+ALIVE=`/usr/local/bin/tw-alive $1`
+if [ "$ALIVE" == "accessible" ] then
+	echo we are good to go
+fi
 
 #sense ID of last tweet in account's consolidated file
 LASTTWEET=`tail -1 $1-consolidated* | awk -F " " {'print $1'}`

@@ -2,6 +2,7 @@
 # encoding: utf-8
 #DESC: download tweets from a given screen name
 import tweepy, csv, sys, os, re
+from time import gmtime, strftime
 from simpleconfigparser import simpleconfigparser
 
 config = simpleconfigparser()
@@ -14,7 +15,17 @@ def get_all_tweets(screen_name,thelast):
 	auth = tweepy.OAuthHandler(config.API.consumer_key, config.API.consumer_secret)
 	auth.set_access_token(config.API.access_token_key, config.API.access_token_secret)
 	api = tweepy.API(auth)
-	
+
+	#log details on user being checked
+        y = api.get_user(screen_name)
+        if y:
+            userlog = open(os.environ['HOME'] + "/Dropbox/userlog.csv",'a')
+            focnt = str(y.followers_count)
+            frcnt = str(y.friends_count)
+            statc = str(y.statuses_count)
+            userlog.write(strftime("%Y-%m-%d %H:%M:%S", gmtime()) + "," + y.screen_name + "," + y.id_str + "," +  frcnt + "," + focnt + "," + statc + "," +  str(y.created_at) + "\n")
+            print(strftime("%Y-%m-%d %H:%M:%S", gmtime()) + "," + y.screen_name + "," + y.id_str + "," +  frcnt + "," + focnt + "," + statc + "," +  str(y.created_at) + "\n")
+            userlog.close()	
 	#initialize a list to hold all the tweepy Tweets
 	alltweets = []	
 	
@@ -36,8 +47,8 @@ def get_all_tweets(screen_name,thelast):
                        found = 1
 		alltweets.extend(new_tweets)
 		oldest = alltweets[-1].id - 1
-		
-        tw = open(sys.argv[1],'w')
+
+	tw = open(sys.argv[1],'w')	
         ra = open(sys.argv[1] + "-raw.txt",'w')
         um = open(sys.argv[1] + "-mentions",'w')
         sa = open(sys.argv[1] + "-devtype.csv",'w')

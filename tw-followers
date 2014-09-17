@@ -13,9 +13,10 @@ api = tweepy.API(auth)
 
 derps = api.followers_ids(sys.argv[1])
 for derp in derps:
+    all = api.rate_limit_status()[u'resources'][u'followers'][u'/followers/ids'][u'remaining']
+    print all
     try:
         name = api.get_user(derp).screen_name
         print name 
     except (RuntimeError, TypeError, NameError):
         pass
-    time.sleep(6)

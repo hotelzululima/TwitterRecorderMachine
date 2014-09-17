@@ -38,5 +38,5 @@ if y.protected:
     print("account " + sys.argv[1] + " is protected")
     exit(3)
 
-print("account " + sys.argv[1] + " is accessible")
+print("accessible")
 exit(0)
