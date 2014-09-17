@@ -1,5 +1,0 @@
-#!/bin/bash
-#DESC: pack a given user into tarball, disables future processing
-tar czvf tmp.tgz $1*
-rm $1*
-mv tmp.tgz $1-frozen.tgz
