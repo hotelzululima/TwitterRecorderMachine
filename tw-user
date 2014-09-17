@@ -24,6 +24,7 @@ if True:
             statc = str(y.statuses_count)
             #print dir(y.follow)
             #print y.protected
-            print y.screen_name + "," + y.id_str + "," + str(y.created_at) + "," + frcnt + "," + focnt + "," + statc + "," + strftime("%Y-%m-%d %H:%M:%S", gmtime())
+#            print y.screen_name + "," + y.id_str + "," + str(y.created_at) + "," + frcnt + "," + focnt + "," + statc + "," + strftime("%Y-%m-%d %H:%M:%S", gmtime())
+            print(strftime("%Y-%m-%d %H:%M:%S", gmtime()) + "," + y.screen_name + "," + y.id_str + "," +  frcnt + "," + focnt + "," + statc + "," +  str(y.created_at))
     except (RuntimeError, TypeError, NameError):
         pass

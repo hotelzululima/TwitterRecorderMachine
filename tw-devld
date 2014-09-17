@@ -24,7 +24,7 @@ def get_all_tweets(screen_name,thelast):
             frcnt = str(y.friends_count)
             statc = str(y.statuses_count)
             userlog.write(strftime("%Y-%m-%d %H:%M:%S", gmtime()) + "," + y.screen_name + "," + y.id_str + "," +  frcnt + "," + focnt + "," + statc + "," +  str(y.created_at) + "\n")
-            print(strftime("%Y-%m-%d %H:%M:%S", gmtime()) + "," + y.screen_name + "," + y.id_str + "," +  frcnt + "," + focnt + "," + statc + "," +  str(y.created_at) + "\n")
+            #print(strftime("%Y-%m-%d %H:%M:%S", gmtime()) + "," + y.screen_name + "," + y.id_str + "," +  frcnt + "," + focnt + "," + statc + "," +  str(y.created_at))
             userlog.close()	
 	#initialize a list to hold all the tweepy Tweets
 	alltweets = []	
