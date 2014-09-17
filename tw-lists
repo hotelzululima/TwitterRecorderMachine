@@ -15,8 +15,10 @@ auth = tweepy.OAuthHandler(config.API.consumer_key, config.API.consumer_secret)
 auth.set_access_token(config.API.access_token_key, config.API.access_token_secret)
 api = tweepy.API(auth)
 
-name = config.API.account
-if len(sys.argv) > 1:
+y = api.verify_credentials()
+name = y.screen_name
+
+if len(sys.argv) == 2:
    name = sys.argv[1]
 
 lists = api.lists_all(name)
