@@ -23,3 +23,4 @@ auth.set_access_token(auth.access_token.key, auth.access_token.secret)
 api = tweepy.API(auth)
 y = api.verify_credentials()
 print "account = %s" % y.screen_name
+print "homedir = Dropbox"

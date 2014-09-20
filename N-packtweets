@@ -4,6 +4,7 @@
 #DESC: This shell script is the most embarassing piece of code ever.
 DERP=`date +%Y-%m-%d-%H-%M`
 echo $DERP
+HOMEDIR=`tw-home`
 
 #check if account is alive, this is about 3 secs
 ALIVE=`/usr/local/bin/tw-alive $1`
@@ -22,12 +23,12 @@ fi
 #sense ID of last tweet in account's consolidated file
 LASTTWEET=`tail -1 $1-consolidated* | awk -F " " {'print $1'}`
 #perflog is a catch all for whatever debugging is happening
-echo $LASTTWEET >> $HOME/Dropbox/perflog.txt
+echo $LASTTWEET >> $HOME/$HOMEDIR/perflog.txt
 #download tweets, stop when we see a tweet ID we already have
 /usr/local/bin/tw-devld $1  $LASTTWEET 
 
 # this is the place to send $1 to Splunk
-#cat $1 | grep "^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]" >  ~/Dropbox/splunkspool/$1
+#cat $1 | grep "^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]" >  ~/$HOMEDIR/splunkspool/$1
 #yes, this IS horribly inefficient
 #yes, this IS horribly inelegant
 cat $1 > packtemp-$DERP.txt

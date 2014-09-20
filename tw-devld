@@ -19,7 +19,7 @@ def get_all_tweets(screen_name,thelast):
 	#log details on user being checked
         y = api.get_user(screen_name)
         if y:
-            userlog = open(os.environ['HOME'] + "/Dropbox/userlog.csv",'a')
+            userlog = open(os.environ['HOME'] + "/" + config.API.homedir + "/userlog.csv",'a')
             focnt = str(y.followers_count)
             frcnt = str(y.friends_count)
             statc = str(y.statuses_count)
