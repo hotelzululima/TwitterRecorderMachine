@@ -12,14 +12,14 @@ from bs4 import BeautifulSoup
 try:
     urllib2.urlopen("http://twitter.com/" + sys.argv[1])
 except urllib2.URLError:
-    print(sys.argv[1] + " does not exist")
+    print("self-deleted or renamed")
     exit(1)
 
 #Account has been suspended by Twitter
 soup = BeautifulSoup(urllib2.urlopen("http://twitter.com/" + sys.argv[1]))
 for thing in soup("title"):
     if(thing.text == "Twitter / Account Suspended"):
-        print(sys.argv[1] + " is suspended")
+        print("suspended")
         exit(2)
 
 config = simpleconfigparser()
@@ -32,11 +32,11 @@ api = tweepy.API(auth)
 #Account is protected
 y = api.get_user(sys.argv[1])
 if y.protected:
-    #need to check if our account can see it, but the
-    #various Tweepy friendship check methods all seem
-    #to be broken at the moment
-    print("account " + sys.argv[1] + " is protected")
-    exit(3)
+    try:
+        len(api.user_timeline(screen_name = sys.argv[1],count=1))
+    except tweepy.TweepError:
+        print("protected")
+        exit(3)
 
 print("accessible")
 exit(0)
