@@ -29,7 +29,8 @@ auth = tweepy.OAuthHandler(config.API.consumer_key, config.API.consumer_secret)
 auth.set_access_token(config.API.access_token_key, config.API.access_token_secret)
 api = tweepy.API(auth)
 
-#Account is protected
+#Account is protected, friendship checks in tweepy just don't work
+#so try to get one tweet to see if we are following the target
 y = api.get_user(sys.argv[1])
 if y.protected:
     try:
