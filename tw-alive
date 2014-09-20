@@ -12,14 +12,14 @@ from bs4 import BeautifulSoup
 try:
     urllib2.urlopen("http://twitter.com/" + sys.argv[1])
 except urllib2.URLError:
-    print("self-deleted or renamed")
+    print(sys.argv[1] + " self-deleted or renamed")
     exit(1)
 
 #Account has been suspended by Twitter
 soup = BeautifulSoup(urllib2.urlopen("http://twitter.com/" + sys.argv[1]))
 for thing in soup("title"):
     if(thing.text == "Twitter / Account Suspended"):
-        print("suspended")
+        print(sys.argv[1] + " suspended")
         exit(2)
 
 config = simpleconfigparser()
@@ -36,7 +36,7 @@ if y.protected:
     try:
         len(api.user_timeline(screen_name = sys.argv[1],count=1))
     except tweepy.TweepError:
-        print("protected")
+        print(sys.argv[1] + " protected")
         exit(3)
 
 print("accessible")
