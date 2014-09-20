@@ -35,7 +35,7 @@ touch $HOME/$HOMEDIR/queuelock
 # of poorly understood special cases where this can wedge on a particular account
 # and cure usually involves disabling cron job for user, manually running N-queue
 # and examining output to find the problem.
-(cd $HOME/Dropbox ; find . | grep "consolidated" | grep -v "dropbox.cache" | grep -v "idle-" | awk -F "consolidated-" {'print $2 " " $1'} | sort | head -1 | awk -F " " {'print $2'} | awk '{sub(/-/,"/" s)};1' | awk -F "\/" {'print "(cd $HOME/$HOMEDIR/" $2 "; N-packtweets " $3 ")"'} > $HOME/$HOMEDIR/next)
+(cd $HOME/$HOMEDIR ; find . | grep "consolidated" | grep -v "dropbox.cache" | grep -v "idle-" | awk -F "consolidated-" {'print $2 " " $1'} | sort | head -1 | awk -F " " {'print $2'} | awk '{sub(/-/,"/" s)};1' | awk -F "\/" {'print "(cd $HOME/$HOMEDIR/" $2 "; N-packtweets " $3 ")"'} > $HOME/$HOMEDIR/next)
 
 # log what we're doing
 cat $HOME/$HOMEDIR/next >> $HOME/$HOMEDIR/perflog.txt
