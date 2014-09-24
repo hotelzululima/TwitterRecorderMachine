@@ -4,20 +4,24 @@
 #DESC: This shell script is the most embarassing piece of code ever.
 DERP=`date +%Y-%m-%d-%H-%M`
 echo $DERP
-HOMEDIR=`tw-home`
+export HOMEDIR=`tw-home`
+export FULLPATH="$HOME/$HOMEDIR/"
+echo $FULLPATH
 
 #check if account is alive, this is about 3 secs
 ALIVE=`/usr/local/bin/tw-alive $1`
 if [ "$ALIVE" == "accessible" ] 
     then
-	echo "we are good to go"
+	echo "twitter account is accessible"
 else
     #this is not right
     echo "idling account: $ALIVE"
-    for d in $(ls $1\*); do
-        mv -v $d idle-$d
-        exit 1
-    done
+    ls $1* > smurf
+    cat smurf | awk {'print "mv " $0 " idle-" $0'} > movethem
+    sh movethem
+    rm movethem
+    rm smurf
+    exit 1
 fi
 
 #sense ID of last tweet in account's consolidated file

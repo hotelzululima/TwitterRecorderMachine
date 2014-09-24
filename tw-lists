@@ -23,4 +23,4 @@ if len(sys.argv) == 2:
 
 lists = api.lists_all(name)
 for list in lists:
-   print list.slug + "," + list.id_str
+   print list.slug + "," + list.id_str + "," + list.description
