@@ -53,7 +53,6 @@ rm $1-mentsumm*
 rm $1-topment-*
 mv mentions-$DERP.csv $1-mentions-$DERP.csv
 rm $1-mentions
-rm mentions-$DERP.csv
 cat $1-mentions-$DERP.csv | sort | uniq -c | awk -F " " {'print $1 "," $2'} | sort -n > $1-mentsumm-$DERP.csv
 tail -25 $1-mentsumm-$DERP.csv > $1-topment-$DERP.csv
 

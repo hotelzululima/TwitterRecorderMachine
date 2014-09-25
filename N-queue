@@ -5,14 +5,11 @@ START=`date +%s`
 APISTART=`tw-rate`
 export HOMEDIR=`tw-home`
 export FULLPATH="$HOME/$HOMEDIR/"
-echo $FULLPATH
-echo "^^^ should be full path"
 
 # exclusive lock for the entire account's directory.
 # When processing a new account it is possible that the download
 # will require more than sixty seconds, this eliminates a messy
 # race condition.
-echo "before queuelock"
 if [ "$APISTART" -gt "0" ] && [ ! -f "$FULLPATH/queuelock" ]
     then
 touch $FULLPATH/queuelock
@@ -28,8 +25,7 @@ touch $FULLPATH/queuelock
 # to suit your specific setup. A steady high load
 # average is fine, getting into swap at all almost
 # always preceded serious trouble.
-echo "randwait disabled, fix this before git commit"
-#/usr/local/bin/tw-randwait
+/usr/local/bin/tw-randwait
 
 # find new lists, create directories, sense missing files, create 1970 empties
 # need to check for protected accounts before placing them in rotation
@@ -40,16 +36,14 @@ echo "randwait disabled, fix this before git commit"
 # of poorly understood special cases where this can wedge on a particular account
 # and cure usually involves disabling cron job for user, manually running N-queue
 # and examining output to find the problem.
-echo "running big command string"
-echo "#!/bin/bash" > $FULLPATH/next
 (cd $FULLPATH ; find . | grep "consolidated" | grep -v "dropbox.cache" | grep -v "idle-" | awk -F "consolidated-" {'print $2 " " $1'} | sort | head -1 | awk -F " " {'print $2'} | awk '{sub(/-/,"/" s)};1' | awk -F "\/" {'print "(cd $FULLPATH/" $2 "; N-packtweets " $3 ")"'} >> "$FULLPATH/next")
 
 # log what we're doing
-echo "adding entry to perflog"
 cat $FULLPATH/next >> $FULLPATH/perflog.txt
 # actually collect tweets for the target account.
 chmod 755 $FULLPATH/next
 $FULLPATH/next
+rm $FULLPATH/next
 
 # this does not do a graceful job of handling the
 # API token bucket refill, but it produces a human
