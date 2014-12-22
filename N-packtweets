@@ -13,15 +13,6 @@ ALIVE=`/usr/local/bin/tw-alive $1`
 if [ "$ALIVE" == "accessible" ] 
     then
 	echo "twitter account is accessible"
-    #this is not right
-    echo "awakening account: $ALIVE"
-    ls idle-$1* > smurf
-    cat smurf | awk -F "idle-" {'print "mv " $0 " " $2'} > movethem
-    sh movethem
-    rm movethem
-    rm smurf
-    exit 1
-
 else
     #this is not right
     echo "idling account: $ALIVE"
@@ -78,3 +69,9 @@ cat $1-devtype-$DERP.csv | awk -F "," {'print $1 "," $2'} | sort | uniq -c | awk
 
 # looks funny, but hist-hour is a shell script
 /usr/local/bin/hist-hour $1
+
+# now try to thaw all frozen accounts
+ls idle-* | awk -F "-" {'print "tw-thaw " $2'} > thaw 
+sh thaw
+
+
