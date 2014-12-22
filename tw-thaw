@@ -1,0 +1,20 @@
+#!/bin/bash
+#DESC: This is invoked by N-queue only IN the target directory
+DERP=`date +%Y-%m-%d-%H-%M`
+echo $DERP
+export HOMEDIR=`tw-home`
+export FULLPATH="$HOME/$HOMEDIR/"
+echo $FULLPATH
+
+#check if account is alive, this is about 3 secs
+ALIVE=`/usr/local/bin/tw-alive $1`
+if [ "$ALIVE" == "accessible" ] 
+    then
+	echo "twitter account is accessible"
+    #this is not right
+    echo "awakening account: $1"
+    ls idle-$1* | awk -F "idle-" {'print "mv " $0 " " $2'} > movethem
+    sh movethem
+    rm movethem
+#   rm smurf
+fi
