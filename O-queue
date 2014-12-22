@@ -1,0 +1,82 @@
+#!/bin/bash
+TEXTDATE=`date`
+#mind your OS version, check this manually.
+START=`date +%s`
+APISTART=`tw-rate`
+export HOMEDIR=`tw-home`
+export FULLPATH="$HOME/$HOMEDIR/"
+
+# exclusive lock for the entire account's directory.
+# When processing a new account it is possible that the download
+# will require more than sixty seconds, this eliminates a messy
+# race condition.
+if [ "$APISTART" -gt "0" ] && [ ! -f "$FULLPATH/queuelock" ]
+    then
+touch $FULLPATH/queuelock
+
+# random 30 second delay to smooth the system load
+# if you launch too many accounts at once you'll 
+# get into swap, execution times are vastly more
+# than sixty seconds, system will quickly thrash
+# to a halt. This isn't deterministic, happens when
+# two or more users get excited and profile a bunch
+# of new accounts. Execution times on current accounts
+# are on the order of a few seconds, tweak this script
+# to suit your specific setup. A steady high load
+# average is fine, getting into swap at all almost
+# always preceded serious trouble.
+/usr/local/bin/tw-randwait
+
+# find new lists, create directories, sense missing files, create 1970 empties
+# need to check for protected accounts before placing them in rotation
+#(cd $FULLPATH ; /usr/local/bin/tw-trmlist)
+
+# hunt for unfrozen consolidated files, pick the one with the oldest date stamp
+# process it next. Keep an eye on ~/$HOMEDIR/perflog.txt, there are a small number
+# of poorly understood special cases where this can wedge on a particular account
+# and cure usually involves disabling cron job for user, manually running N-queue
+# and examining output to find the problem.
+(cd $FULLPATH ; find . | grep "consolidated" |  grep -v "idle-" | awk -F "consolidated-" {'print $2 " " $1'} | sort | head -1 | awk -F " " {'print $2'} | awk '{sub(/-/,"/" s)};1' | awk -F "\/" {'print "(cd $FULLPATH/" $2 "; N-packtweets " $3 ")"'} > "$FULLPATH/next")
+
+# log what we're doing
+cat $FULLPATH/next >> $FULLPATH/perflog.txt
+# actually collect tweets for the target account.
+chmod 755 $FULLPATH/next
+$FULLPATH/next
+
+# We need to sense idle-* accounts and put the ones that have recovered back into
+# service. N-packtweets knows how to thaw an accounts files if handed one that is
+# in idle-*, but the above process never passes it idles. So ... this *should*
+# work, and it really should be made cleaner at some point.
+#(cd $FULLPATH ; find . | grep "consolidated" |  grep "idle-" | 
+#awk -F "consolidated-" {'print $2 " " $1'} | sort | head -1 
+#| awk -F " " {'print $2'} | awk '{sub(/-/,"/" s)};1' | awk -F "\/" {'print "(cd $FULLPATH/" $2 "; N-packtweets " $3 ")"'} > "$FULLPATH/next")
+
+
+# this does not do a graceful job of handling the
+# API token bucket refill, but it produces a human
+# readable log of API usage.
+END=`date +%s`
+APIEND=`tw-rate`
+TIMEUSE=$((END - START))
+APIUSE=$((APISTART - APIEND))
+echo $TEXTDATE secs: $TIMEUSE API calls: $APIUSE API start: $APISTART API end: $APIEND >> $FULLPATH/perflog.txt 
+echo '' >> $FULLPATH/perflog.txt
+rm $FULLPATH/queuelock
+
+# otherwise we've been invoked before the prior instance of N-queue
+# has completed, or more rarely we have a queuelock but the process
+# that created it has died. That happens when manually cleaning up
+# and forgetting to double check queuelock presence. 
+else
+LOCKDATE=`stat -f %y $FULLPATH/queuelock`
+echo $LOCKDATE >> $FULLPATH/perflog.txt
+TEND=`date`
+echo $TEND >> $FULLPATH/perflog.txt
+echo '' >> $FULLPATH/perflog.txt
+# looks funny, but we're giving a locked directory an additional
+# sixty seconds, assuming that a long process doesn't take two
+# minutes. In practice the very longest were 65 - 70 seconds,
+# so this should be plenty of breathing room.
+rm $FULLPATH/queuelock
+fi
