@@ -36,13 +36,21 @@ touch $FULLPATH/queuelock
 # of poorly understood special cases where this can wedge on a particular account
 # and cure usually involves disabling cron job for user, manually running N-queue
 # and examining output to find the problem.
-(cd $FULLPATH ; find . | grep "consolidated" | grep -v "dropbox.cache" | grep -v "idle-" | awk -F "consolidated-" {'print $2 " " $1'} | sort | head -1 | awk -F " " {'print $2'} | awk '{sub(/-/,"/" s)};1' | awk -F "\/" {'print "(cd $FULLPATH/" $2 "; N-packtweets " $3 ")"'} > "$FULLPATH/next")
+(cd $FULLPATH ; find . | grep "consolidated" |  grep -v "idle-" | awk -F "consolidated-" {'print $2 " " $1'} | sort | head -1 | awk -F " " {'print $2'} | awk '{sub(/-/,"/" s)};1' | awk -F "\/" {'print "(cd $FULLPATH/" $2 "; N-packtweets " $3 ")"'} > "$FULLPATH/next")
 
 # log what we're doing
 cat $FULLPATH/next >> $FULLPATH/perflog.txt
 # actually collect tweets for the target account.
 chmod 755 $FULLPATH/next
 $FULLPATH/next
+
+# We need to sense idle-* accounts and put the ones that have recovered back into
+# service. N-packtweets knows how to thaw an accounts files if handed one that is
+# in idle-*, but the above process never passes it idles. So ... this *should*
+# work, and it really should be made cleaner at some point.
+(cd $FULLPATH ; find . | grep "consolidated" |  grep "idle-" | 
+awk -F "consolidated-" {'print $2 " " $1'} | sort | head -1 | awk -F " " {'print $2'} | awk '{sub(/-/,"/" s)};1' | awk -F "\/" {'print "(cd $FULLPATH/" $2 "; N-packtweets " $3 ")"'} > "$FULLPATH/next")
+
 
 # this does not do a graceful job of handling the
 # API token bucket refill, but it produces a human
@@ -65,4 +73,9 @@ echo $LOCKDATE >> $FULLPATH/perflog.txt
 TEND=`date`
 echo $TEND >> $FULLPATH/perflog.txt
 echo '' >> $FULLPATH/perflog.txt
+# looks funny, but we're giving a locked directory an additional
+# sixty seconds, assuming that a long process doesn't take two
+# minutes. In practice the very longest were 65 - 70 seconds,
+# so this should be plenty of breathing room.
+rm $FULLPATH/queuelock
 fi

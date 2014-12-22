@@ -13,6 +13,15 @@ ALIVE=`/usr/local/bin/tw-alive $1`
 if [ "$ALIVE" == "accessible" ] 
     then
 	echo "twitter account is accessible"
+    #this is not right
+    echo "awakening account: $ALIVE"
+    ls idle-$1* > smurf
+    cat smurf | awk -F "idle-" {'print "mv " $0 " " $2'} > movethem
+    sh movethem
+    rm movethem
+    rm smurf
+    exit 1
+
 else
     #this is not right
     echo "idling account: $ALIVE"
