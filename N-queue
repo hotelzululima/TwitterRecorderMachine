@@ -6,6 +6,13 @@ APISTART=`tw-rate`
 export HOMEDIR=`tw-home`
 export FULLPATH="$HOME/$HOMEDIR/"
 
+echo "======== N-queue =========="
+echo $0
+echo $1
+echo $2
+echo $3
+echo "=================="
+
 # exclusive lock for the entire account's directory.
 # When processing a new account it is possible that the download
 # will require more than sixty seconds, this eliminates a messy
@@ -36,7 +43,7 @@ touch $FULLPATH/queuelock
 # of poorly understood special cases where this can wedge on a particular account
 # and cure usually involves disabling cron job for user, manually running N-queue
 # and examining output to find the problem.
-(cd $FULLPATH ; find . | grep "consolidated" |  grep -v "idle-" | awk -F "consolidated-" {'print $2 " " $1'} | sort | head -1 | awk -F " " {'print $2'} | awk '{sub(/-/,"/" s)};1' | awk -F "\/" {'print "(cd $FULLPATH/" $2 "; N-packtweets " $3 ")"'} > "$FULLPATH/next")
+(cd $FULLPATH ; find . | grep "consolidated" |  grep -v "idle" | awk -F "consolidated-" {'print $2 " " $1'} | sort | head -1 | awk -F " " {'print $2'} | awk '{sub(/-/,"/" s)};1' | awk -F "\/" {'print "(cd $FULLPATH/" $2 "; N-packtweets " $3 ")"'} > "$FULLPATH/next")
 
 # log what we're doing
 cat $FULLPATH/next >> $FULLPATH/perflog.txt
@@ -48,8 +55,8 @@ $FULLPATH/next
 # service. N-packtweets knows how to thaw an accounts files if handed one that is
 # in idle-*, but the above process never passes it idles. So ... this *should*
 # work, and it really should be made cleaner at some point.
-(cd $FULLPATH ; find . | grep "consolidated" |  grep "idle-" | 
-awk -F "consolidated-" {'print $2 " " $1'} | sort | head -1 | awk -F " " {'print $2'} | awk '{sub(/-/,"/" s)};1' | awk -F "\/" {'print "(cd $FULLPATH/" $2 "; N-packtweets " $3 ")"'} > "$FULLPATH/next")
+#(cd $FULLPATH ; find . | grep "consolidated" |  grep "idle-" | 
+#awk -F "consolidated-" {'print $2 " " $1'} | sort | head -1 | awk -F " " {'print $2'} | awk '{sub(/-/,"/" s)};1' | awk -F "\/" {'print "(cd $FULLPATH/" $2 "; N-packtweets " $3 ")"'} > "$FULLPATH/next")
 
 
 # this does not do a graceful job of handling the
@@ -79,3 +86,4 @@ echo '' >> $FULLPATH/perflog.txt
 # so this should be plenty of breathing room.
 rm $FULLPATH/queuelock
 fi
+
