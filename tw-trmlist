@@ -32,15 +32,15 @@ for list in lists:
       dirname = dirname.replace('-', '') 
       if not os.path.isdir(dirname):
          os.makedirs(dirname)
-   desc = open("./" + dirname + "/description.txt", 'w')
-   desc.write(list.description + "\n")
-   for member in tweepy.Cursor(api.list_members,name,list.slug).items():
-      focnt = str(member.followers_count)
-      frcnt = str(member.friends_count)
-      statc = str(member.statuses_count)
-      desc.write(member.screen_name +"," + member.id_str + "," + str(member.created_at) + "," + frcnt + "," + focnt + "," + statc  + "," + strftime("%Y-%m-%d %H:%M:%S", gmtime()) + "\n")
-      if not os.path.isfile( "./" + dirname + "/" + member.screen_name):
-          new = open("./" + dirname + "/" + member.screen_name + "-consolidated-1970-01-01-00-00.txt", 'w')
-          new.write("999999999999999999")
-          new.close()
-   desc.close()
+      desc = open("./" + dirname + "/description.txt", 'w')
+      desc.write(list.description + "\n")
+      for member in tweepy.Cursor(api.list_members,name,list.slug).items():
+          focnt = str(member.followers_count)
+          frcnt = str(member.friends_count)
+          statc = str(member.statuses_count)
+          desc.write(member.screen_name +"," + member.id_str + "," + str(member.created_at) + "," + frcnt + "," + focnt + "," + statc  + "," + strftime("%Y-%m-%d %H:%M:%S", gmtime()) + "\n")
+          if not os.path.isfile( "./" + dirname + "/" + member.screen_name):
+              new = open("./" + dirname + "/" + member.screen_name + "-consolidated-1970-01-01-00-00.txt", 'w')
+              new.write("999999999999999999")
+              new.close()
+      desc.close()
